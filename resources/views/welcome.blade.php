@@ -1,7 +1,3 @@
-@php
-$products = array();
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +8,7 @@ $products = array();
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Mi Tienda</a>
+        <a class="navbar-brand" href="#">{{ config( "app.name" ) }}</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -29,16 +25,16 @@ $products = array();
             </ul>
             <ul class="navbar-nav ml-auto">
                 @guest
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('register') }}">Registrarse</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">Registrarse</a>
+                    </li>
                 @else
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}">Logout</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+                    </li>
                 @endguest
             </ul>
         </div>
@@ -54,6 +50,16 @@ $products = array();
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ $product->description }}</p>
                             <p class="card-text">Cantidad en stock: {{ $product->stock }}</p>
+                            @auth
+                                @if( $product->stock > 0 )
+                                    <input class="form-control quantity" min="1" max="{{ $product->stock }}" type="number" name="quantity" value="1">
+                                    <a href="#" class="add-product btn btn-primary">Agregar a carrito</a>
+                                @endif
+                            @endauth
+                            @if( $product->stock > 0 )
+                                    <input class="form-control quantity" min="1" max="{{ $product->stock }}" type="number" name="quantity" value="1">
+                                    <a href="#" class="add-product btn btn-primary">Agregar a carrito</a>
+                                @endif
                         </div>
                     </div>
                 </div>
@@ -64,5 +70,19 @@ $products = array();
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $( document ).ready( function(){
+
+            $( ".add-product" ).click( function( event ){
+
+                event.preventDefault();
+
+                var quantity = $(this).prev('.quantity').val();
+
+                console.log('Producto agregado con cantidad:', quantity);
+            });
+        });
+    </script>
 </body>
 </html>

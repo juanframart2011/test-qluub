@@ -4,11 +4,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\WelcomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Auth::routes();
 
@@ -23,10 +22,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
 
     // Cart routes
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/cart/apart', [CartController::class, 'apart'])->name('cart.apart');
-    Route::get('/cart/cancel', [CartController::class, 'cancel'])->name('cart.cancel');
+    Route::get('/cart', [OrderController::class, 'index'])->name('cart.index');
+    Route::post('/cart/remove/{id}', [OrderController::class, 'remove'])->name('cart.remove');
+    Route::get('/cart/apart', [OrderController::class, 'apart'])->name('cart.apart');
+    Route::get('/cart/cancel', [OrderController::class, 'cancel'])->name('cart.cancel');
 });
 
 Auth::routes();
